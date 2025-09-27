@@ -1,4 +1,5 @@
-﻿import React, { useEffect, useMemo, useRef, useState } from "react";
+﻿// src/pages/Dashboard.jsx
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Bell,
   ChevronRight,
@@ -139,19 +140,31 @@ export default function Dashboard() {
     { m: "Oct", v: 200 }, { m: "Nov", v: 170 }, { m: "Dec", v: 160 },
   ];
 
-  // Map
+  // ===============================
+  // MapmyIndia API connection
+  // ===============================
   const mapRef = useRef(null);
   const MAPMYINDIA_KEY = import.meta.env.VITE_MAPMYINDIA_KEY; // keep in .env
   const CAMPUS_CENTER = [17.385, 78.4867]; // Replace with your campus coords
+   
+  // ✅ Add this log here
+ console.log("MapmyIndia key is:", MAPMYINDIA_KEY);
 
   useEffect(() => {
-    if (mapRef.current) return;
+    if (mapRef.current) return; // only init once
     const map = L.map("campus-map", { center: CAMPUS_CENTER, zoom: 15 });
     mapRef.current = map;
-    L.tileLayer(
-      `https://apis.mapmyindia.com/advancedmaps/v1/${MAPMYINDIA_KEY}/map_tile/256/{z}/{x}/{y}.png`,
-      { attribution: "© MapmyIndia" }
-    ).addTo(map);
+
+    // Add MapmyIndia base tiles
+ // inside useEffect in Dashboard.jsx
+L.tileLayer(
+  `https://apis.mappls.com/advancedmaps/v1/${MAPMYINDIA_KEY}/map_tile/256/{z}/{x}/{y}.png`,
+  { attribution: "© MapmyIndia", maxZoom: 20 }
+).addTo(map);
+
+
+
+    // Example marker
     L.marker(CAMPUS_CENTER).addTo(map).bindPopup("Campus Center").openPopup();
   }, [MAPMYINDIA_KEY]);
 
@@ -355,15 +368,16 @@ export default function Dashboard() {
                           <td className="py-2 pr-3">
                             <span
                               className={`px-2 py-0.5 rounded text-xs ${
-                                r.s === "Healthy"
-                                  ? "bg-green-500/10 text-green-300"
-                                  : r.s === "Cleaned"
-                                  ? "bg-sky-500/10 text-sky-300"
-                                  : "bg-amber-500/10 text-amber-300"
-                              }`}
-                            >
-                              {r.s}
+                              r.s === "Healthy"
+                              ? "bg-green-500/10 text-green-300"
+                              : r.s === "Cleaned"
+                              ? "bg-sky-500/10 text-sky-300"
+                              : "bg-amber-500/10 text-amber-300"
+                             }`}
+>
+                               {r.s}
                             </span>
+
                           </td>
                         </tr>
                       ))}
@@ -373,6 +387,7 @@ export default function Dashboard() {
               </CardBody>
             </Card>
 
+            {/* Map Section (connected to MapmyIndia) */}
             <Card>
               <CardBody>
                 <div className="flex items-center justify-between">
@@ -380,7 +395,10 @@ export default function Dashboard() {
                     <MapPin size={18} className="text-violet-400" /> Campus Map
                   </div>
                 </div>
-                <div id="campus-map" className="mt-3 h-[320px] w-full rounded-xl overflow-hidden border border-slate-800" />
+                <div
+                  id="campus-map"
+                  className="mt-3 h-[320px] w-full rounded-xl overflow-hidden border border-slate-800"
+                />
               </CardBody>
             </Card>
           </div>
@@ -394,6 +412,9 @@ export default function Dashboard() {
   );
 }
 
+// ===============================
+// Small helper component
+// ===============================
 function NavItem({ icon: Icon, label, active }) {
   return (
     <button
@@ -408,3 +429,4 @@ function NavItem({ icon: Icon, label, active }) {
     </button>
   );
 }
+
