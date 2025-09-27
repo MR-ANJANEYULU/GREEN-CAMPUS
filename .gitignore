@@ -1,0 +1,31 @@
+# --- Frontend (track code, ignore generated) ---
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/.next/
+frontend/out/
+frontend/coverage/
+frontend/.parcel-cache/
+
+# --- Backend (track code, ignore generated) ---
+backend/.venv/
+backend/venv/
+backend/__pycache__/
+backend/**/*.pyc
+backend/.mypy_cache/
+backend/.pytest_cache/
+backend/.ruff_cache/
+backend/.coverage
+backend/.cache/
+
+# --- Secrets & local env ---
+*.env
+*.env.*
+!.env.example
+
+# --- Editors/OS ---
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
